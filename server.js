@@ -23,7 +23,10 @@ io.on('connection',function(socket){
             x: randomInt(100,400),
             y: randomInt(100,400),
             rotationX: 0,
-            rotationY: 0
+            rotationY: 0,
+            xLocation: 0,
+            yLocation: 0,
+            moving: false
         };
 
         socket.emit('addallplayers',getAllPlayers());
@@ -33,6 +36,18 @@ io.on('connection',function(socket){
         socket.on('newplayerrotation',function(id,rotationX,rotationY){
             socket.player.rotationX = rotationX;
             socket.player.rotationY = rotationY;
+            socket.emit('setallplayers',getAllPlayers());
+        });
+
+        socket.on('playerstartmoving',function(id){
+            socket.player.moving = true;
+            socket.emit('setallplayers',getAllPlayers());
+        });
+
+        socket.on('playerstopmoving',function(id,xLocation,yLocation){
+            socket.player.moving = false;
+            socket.player.xLocation = xLocation;
+            socket.player.yLocation = yLocation;
             socket.emit('setallplayers',getAllPlayers());
         });
 
